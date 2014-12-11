@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+
+  "name": "Flite Finder",
+  "description": "Finds Flite ads on pages and opens tabs",
+  "version": "1.2",
+  "author": "Andy Hills",
+
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "webRequest",
+    "webNavigation",
+    "http://*/*", "https://*/*"
+  ],
+
+  "background": {
+    "scripts": ["findAd.js"],
+    "persistent": true
+  }
+}
