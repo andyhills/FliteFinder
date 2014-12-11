@@ -7,7 +7,7 @@
   "author": "Andy Hills",
 
   "browser_action": {
-    "default_icon": "icon.png"
+    "default_icon": "flite-finder-icons_active.png"
   },
   
   "permissions": [
