@@ -3,13 +3,15 @@
 
   "name": "Flite Finder",
   "description": "Finds Flite ads on pages and opens tabs",
-  "version": "1.2",
+  "version": "1.3",
   "author": "Andy Hills",
 
   "browser_action": {
-    "default_icon": "flite-finder-icons_active.png"
+    "default_icon": "icons/flite-finder-icons_inactive.png"
   },
   
+  "icons": {"128": "icons/flite-finder-icons_active.png"},
+
   "permissions": [
     "activeTab",
     "tabs",
