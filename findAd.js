@@ -1,8 +1,10 @@
 //Script for flite finder
-//1.2
+//1.3
 
 var guidList = [];
 var guidLoc, theGuid, newURL; 
+var guidRegEx = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+chrome.browserAction.setBadgeBackgroundColor({color: "#888888"});
 
 //reset guidList on every page load
 chrome.webNavigation.onBeforeNavigate.addListener(
@@ -20,9 +22,10 @@ chrome.webNavigation.onBeforeNavigate.addListener(
 chrome.webRequest.onBeforeRequest.addListener(
 	function(info) {
 		//console.log(info.url);
-		guidLoc = info.url.search('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
+		guidLoc = info.url.search(guidRegEx);
+		if (guidLoc < 0) {return;}
 		theGuid = info.url.substring(guidLoc, guidLoc+36);
-		if (guidList.indexOf(theGuid) === -1  && theGuid.search('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}') === 0) {
+		if (guidList.indexOf(theGuid) === -1) {
 			guidList.push(theGuid);
 			chrome.browserAction.setIcon({path: "icons/flite-finder-icons_active.png"});
 			chrome.browserAction.setBadgeText({text: guidList.length.toString()});
@@ -45,3 +48,4 @@ chrome.browserAction.onClicked.addListener(
 		}
 	}
 );
+
