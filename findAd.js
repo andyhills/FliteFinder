@@ -14,7 +14,7 @@ chrome.webNavigation.onBeforeNavigate.addListener(
 			//console.log(details.frameId + " " + details.url);
 			guidList = [];
 			chrome.browserAction.setBadgeText({text: ""});
-			chrome.browserAction.setIcon({path: "icons/flite-finder-icons_inactive.png"}); 
+			//chrome.browserAction.setIcon({path: "icons/flite-finder-icons_inactive.png"}); 
 		}
 	}
 );
@@ -28,7 +28,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 		theGuid = info.url.substring(guidLoc, guidLoc+36);
 		if (guidList.indexOf(theGuid) === -1) {
 			guidList.push(theGuid);
-			chrome.browserAction.setIcon({path: "icons/flite-finder-icons_active.png"});
+			//chrome.browserAction.setIcon({path: "icons/flite-finder-icons_active.png"});
 			chrome.browserAction.setBadgeText({text: guidList.length.toString()});
 		}
 		
