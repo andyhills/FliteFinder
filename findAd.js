@@ -5,7 +5,7 @@ var guidList = [];
 var guidLoc, theGuid, newURL; 
 var guidRegEx = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
-chrome.browserAction.setBadgeBackgroundColor({color: "#888888"});
+chrome.browserAction.setBadgeBackgroundColor({color: "#666666"});
 
 //reset guidList on every page load
 chrome.webNavigation.onBeforeNavigate.addListener(
@@ -49,4 +49,3 @@ chrome.browserAction.onClicked.addListener(
 		}
 	}
 );
-
