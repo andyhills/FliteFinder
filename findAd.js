@@ -52,13 +52,12 @@ chrome.browserAction.onClicked.addListener(
 
 /* 
 //This is for seizure mode below
-var r= Math.floor((Math.random() * 256)), g, b, a, cArray;
+var r, g, b;
 
 setInterval(function () {
 		r = Math.floor((Math.random() * 256));
 		g = Math.floor((Math.random() * 256));
 		b = Math.floor((Math.random() * 256));
-		//cArray = [r, g, b, a];
 
 		chrome.browserAction.setBadgeBackgroundColor({color: [r, g, b, 255]});
 	},
