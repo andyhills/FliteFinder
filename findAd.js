@@ -2,8 +2,8 @@
 //1.3
 
 var guidList = [];
-var guidLoc, theGuid, newURL; 
 var guidRegEx = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+var adGuids, cGuids;
 
 chrome.browserAction.setBadgeBackgroundColor({color: "#888888"});
 
@@ -13,8 +13,10 @@ chrome.webNavigation.onBeforeNavigate.addListener(
 		if (details.frameId === 0){
 			//console.log(details.frameId + " " + details.url);
 			guidList = [];
+			adGuids = 0;
+			cGuids = 0;
 			chrome.browserAction.setBadgeText({text: ""});
-			//chrome.browserAction.setIcon({path: "icons/flite-finder-icons_inactive.png"}); 
+			//chrome.browserAction.setIcon({path: "icons/flite-finder-icons_inactive.png"});
 		}
 	}
 );
@@ -23,35 +25,52 @@ chrome.webNavigation.onBeforeNavigate.addListener(
 chrome.webRequest.onBeforeRequest.addListener(
 	function(info) {
 		//console.log(info.url);
-		guidLoc = info.url.search(guidRegEx);
-		if (guidLoc < 0) {return;}
-		theGuid = info.url.substring(guidLoc, guidLoc+36);
-		if (guidList.indexOf(theGuid) === -1) {
-			guidList.push(theGuid);
-			//chrome.browserAction.setIcon({path: "icons/flite-finder-icons_active.png"});
-			chrome.browserAction.setBadgeText({text: guidList.length.toString()});
+		var guidLoc, theGuid;
+
+		//get's the ad instance ID if in a campaign
+		if (info.url.indexOf('/ci/') > -1) {
+			guidLoc = info.url.indexOf('/ci/') + 4;
+			theGuid = info.url.substring(guidLoc, guidLoc+36);
+			if (guidList.indexOf(theGuid) < 0) {
+				guidList.push(theGuid);
+				cGuids++;
+			}
 		}
-		
-		//console.log(guidList);
+
+		guidLoc = info.url.indexOf('/i/') + 3;
+		theGuid = info.url.substring(guidLoc, guidLoc+36);
+		if (guidList.indexOf(theGuid) < 0) {
+			guidList.push(theGuid);
+			adGuids++;
+		}
+
+		chrome.browserAction.setBadgeText({text: adGuids.toString()});
+		if (cGuids) {
+			chrome.browserAction.setBadgeText({text: cGuids.toString() + "/" + adGuids.toString()});
+		}
+
 	},
 	//filters:
 	{
-		urls: ["https://r.flite.com/syndication/*", "http://r.flite.com/syndication/*"]
+		urls: ["https://s.flite.com/syndication/ad.js/*", "http://s.flite.com/syndication/ad.js/*"]
 	}
 );
 
 //open the flite ads in new tabs on click of the extension button
 chrome.browserAction.onClicked.addListener(
 	function(tab){
+		var newURL;
 		for (i = 0; i < guidList.length; i++){
 			newURL = "http://console.flite.com/i/"+guidList[i];
-			chrome.tabs.create({url: newURL, index: tab.index + i + 1});
+			chrome.tabs.create({url: newURL, index: tab.index+i+1});
 		}
 	}
 );
 
-/* 
+
 //This is for seizure mode below
+/*
+
 var r, g, b;
 
 setInterval(function () {
